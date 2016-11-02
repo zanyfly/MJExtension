@@ -23,6 +23,9 @@ static const char MJReplacedKeyFromPropertyName121Key = '\0';
 static const char MJNewValueFromOldValueKey = '\0';
 static const char MJObjectClassInArrayKey = '\0';
 
+static const char MJAbandonObjectWithKeyValueKey = '\0';
+
+
 static const char MJCachedPropertiesKey = '\0';
 
 @implementation NSObject (Property)
@@ -231,6 +234,24 @@ static NSMutableDictionary *cachedPropertiesDict_;
     
     [[self dictForKey:&MJCachedPropertiesKey] removeAllObjects];
 }
+
++ (void)mj_abandonObjectWithKeyValue:(MJAbandonObjectWithKeyValue)abandonObjectWithKeyValue{
+
+    objc_setAssociatedObject(self, &MJAbandonObjectWithKeyValueKey, abandonObjectWithKeyValue, OBJC_ASSOCIATION_COPY_NONATOMIC);
+
+}
+
++(NSDictionary *)mj_getAbandonObjectWithKeyValue{
+
+    MJAbandonObjectWithKeyValue mokv = objc_getAssociatedObject(self, &MJAbandonObjectWithKeyValueKey);
+    if (!mokv) {
+        return nil;
+    }
+    
+    return mokv();
+}
+
+
 @end
 
 @implementation NSObject (MJPropertyDeprecated_v_2_5_16)

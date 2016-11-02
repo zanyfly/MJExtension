@@ -215,8 +215,33 @@ static NSNumberFormatter *numberFormatter_;
         NSString *entityName = [NSStringFromClass(self) componentsSeparatedByString:@"."].lastObject;
         return [[NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:context] mj_setKeyValues:keyValues context:context];
     }
+    
+    if([self matchAbandonKeyValue:keyValues]){
+        return nil;
+    }
+    
     return [[[self alloc] init] mj_setKeyValues:keyValues];
 }
+
++(BOOL)matchAbandonKeyValue:(id)keyvalues{
+ 
+    NSDictionary* abandonObjDic = [self mj_getAbandonObjectWithKeyValue];
+    
+    __block BOOL match = NO;
+    
+    [abandonObjDic enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+       
+        if ([[keyvalues objectForKey:key] isEqual:obj]) {
+            match  = YES;
+            *stop  = YES;
+        }
+        
+    }];
+    
+    return match;
+
+}
+
 
 + (instancetype)mj_objectWithFilename:(NSString *)filename
 {

@@ -27,6 +27,11 @@ typedef NSDictionary * (^MJObjectClassInArray)();
 /** 用于过滤字典中的值 */
 typedef id (^MJNewValueFromOldValue)(id object, id oldValue, MJProperty *property);
 
+//抛弃
+typedef NSDictionary * (^MJAbandonObjectWithKeyValue)();
+
+
+
 /**
  * 成员属性相关的扩展
  */
@@ -59,6 +64,17 @@ typedef id (^MJNewValueFromOldValue)(id object, id oldValue, MJProperty *propert
  *  @param replacedKeyFromPropertyName121 将属性名换为其他key去字典中取值
  */
 + (void)mj_setupReplacedKeyFromPropertyName121:(MJReplacedKeyFromPropertyName121)replacedKeyFromPropertyName121;
+
+
+/**
+ 如果符合某些键-值表，放弃生成有效object，直接返回nil
+
+ @param abandonObjectWithKeyValue 生成放弃object的键-值表
+ */
++ (void)mj_abandonObjectWithKeyValue:(MJAbandonObjectWithKeyValue)abandonObjectWithKeyValue;
+
++(NSDictionary *)mj_getAbandonObjectWithKeyValue;
+
 
 #pragma mark - array model class配置
 /**

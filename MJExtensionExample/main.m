@@ -73,6 +73,11 @@ void keyValues2object()
                        //  @"gay" : @"true"
                            };
     
+    
+    [MJUser mj_abandonObjectWithKeyValue:^NSDictionary *{
+        return @{@"height" : @1.55};
+    }];
+    
     // 2.将字典转为MJUser模型
     MJUser *user = [MJUser mj_objectWithKeyValues:dict];
     
