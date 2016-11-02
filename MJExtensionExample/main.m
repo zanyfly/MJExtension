@@ -43,6 +43,11 @@ int main(int argc, char * argv[]) {
         execute(keyValues2object3, @"复杂的字典 -> 模型 (模型的数组属性里面又装着模型)");
         execute(keyValues2object4, @"简单的字典 -> 模型（key替换，比如ID和id，支持多级映射）");
         execute(keyValuesArray2objectArray, @"字典数组 -> 模型数组");
+        
+        execute(keyValuesArray2objectArrayAbandonSomeObject,
+                @"字典数组 -> 模型数组，某些情况放弃部分模型的创建");
+
+        
         execute(object2keyValues, @"模型转字典");
         execute(objectArray2keyValuesArray, @"模型数组 -> 字典数组");
         execute(coreData, @"CoreData示例");
@@ -72,11 +77,6 @@ void keyValues2object()
                        //  @"gay" : @"NO"
                        //  @"gay" : @"true"
                            };
-    
-    
-    [MJUser mj_abandonObjectWithKeyValue:^NSDictionary *{
-        return @{@"height" : @1.55};
-    }];
     
     // 2.将字典转为MJUser模型
     MJUser *user = [MJUser mj_objectWithKeyValues:dict];
@@ -261,6 +261,43 @@ void keyValuesArray2objectArray()
                                @"icon" : @"nami.png",
                                }
                            ];
+    
+    // 2.将字典数组转为MJUser模型数组
+    NSArray *userArray = [MJUser mj_objectArrayWithKeyValuesArray:dictArray];
+    
+    // 3.打印userArray数组中的MJUser模型属性
+    for (MJUser *user in userArray) {
+        MJExtensionLog(@"name=%@, icon=%@", user.name, user.icon);
+    }
+}
+
+
+/**
+ *  字典数组 -> 模型数组
+ */
+void keyValuesArray2objectArrayAbandonSomeObject()
+{
+    // 1.定义一个字典数组
+    NSArray *dictArray = @[
+                           @{
+                               @"name" : @"Jack",
+                               @"icon" : @"lufy.png",
+                               },
+                           
+                           @{
+                               @"name" : @"Rose",
+                               @"icon" : @"nami.png",
+                               },
+                           
+                           @{
+                               @"name" : [NSNull null],
+                               @"icon" : @"nami.png",
+                               }
+                           ];
+    
+    [MJUser mj_abandonObjectWithKeyValue:^NSDictionary *{
+        return @{@"name" : [NSNull null]};
+    }];
     
     // 2.将字典数组转为MJUser模型数组
     NSArray *userArray = [MJUser mj_objectArrayWithKeyValuesArray:dictArray];

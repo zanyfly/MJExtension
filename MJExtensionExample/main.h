@@ -17,6 +17,7 @@ void keyValues2object2();
 void keyValues2object3();
 void keyValues2object4();
 void keyValuesArray2objectArray();
+void keyValuesArray2objectArrayAbandonSomeObject();
 void object2keyValues();
 void objectArray2keyValuesArray();
 void coreData();
